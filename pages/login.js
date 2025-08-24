@@ -13,8 +13,30 @@ export default function Login() {
       setTimeout(() => {
         window.location.href = '/';
       }, 100);
+    } else {import { useState } from 'react';
+
+export default function Login() {
+  const [login, setLogin] = useState('');
+  const [pass, setPass] = useState('');
+  const [err, setErr] = useState('');
+
+  const submit = async (e) => {
+    e.preventDefault();
+
+    const res = await fetch('/api/auth', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ login, pass }),
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      window.location.href = '/';
     } else {
-      setErr('Неверный логин или пароль');
+      setErr(data.message || 'Неизвестная ошибка');
     }
   }
 
