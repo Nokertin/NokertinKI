@@ -9,7 +9,10 @@ export default function Login() {
     e.preventDefault();
     if (login === 'admin' && pass === 'admin') {
       document.cookie = 'auth=1; path=/';
-      window.location.href = '/';
+      // Добавляем задержку в 100 миллисекунд перед перенаправлением
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 100);
     } else {
       setErr('Неверный логин или пароль');
     }
