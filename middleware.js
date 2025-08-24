@@ -1,24 +1,15 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 
 export function middleware(req) {
   const { pathname } = req.nextUrl;
 
-  // Разрешаем доступ к страницам логина и статике
-  if (
-    pathname.startsWith("/login") ||
-    pathname.startsWith("/_next") ||
-    pathname.startsWith("/api") ||
-    pathname.startsWith("/favicon.ico")
-  ) {
+  if (pathname.startsWith('/_next') || pathname.startsWith('/api') || pathname.startsWith('/static') || pathname === '/favicon.ico') {
     return NextResponse.next();
   }
+  if (pathname === '/login') return NextResponse.next();
 
-  // Проверяем куку auth
-  const auth = req.cookies.get("auth");
-  if (auth?.value === "1") {
-    return NextResponse.next();
-  }
+  const auth = req.cookies.get('auth');
+  if (auth && auth === '1') return NextResponse.next();
 
-  // Если не авторизован — редиректим на /login
-  return NextResponse.redirect(new URL("/login", req.url));
+  return NextResponse.redirect(new URL('/login', req.url));
 }

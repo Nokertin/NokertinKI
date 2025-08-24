@@ -1,49 +1,29 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-export default function LoginPage() {
-  const [login, setLogin] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+export default function Login() {
+  const [login, setLogin] = useState('');
+  const [pass, setPass] = useState('');
+  const [err, setErr] = useState('');
 
-  const handleLogin = (e) => {
+  const submit = (e) => {
     e.preventDefault();
-    if (login === "admin" && password === "admin") {
-      document.cookie = "auth=1; path=/"; // ставим куку
-      window.location.href = "/";
+    if (login === 'admin' && pass === 'admin') {
+      document.cookie = 'auth=1; path=/';
+      window.location.href = '/';
     } else {
-      setError("Неверный логин или пароль");
+      setErr('Неверный логин или пароль');
     }
-  };
+  }
 
   return (
-    <div className="flex h-screen items-center justify-center bg-gray-900">
-      <form
-        onSubmit={handleLogin}
-        className="bg-gray-800 p-6 rounded-xl shadow-lg w-80 space-y-4"
-      >
-        <h1 className="text-xl font-bold text-white text-center">Вход</h1>
-        {error && <p className="text-red-400 text-sm">{error}</p>}
-        <input
-          type="text"
-          placeholder="Логин"
-          value={login}
-          onChange={(e) => setLogin(e.target.value)}
-          className="w-full p-2 rounded bg-gray-700 text-white"
-        />
-        <input
-          type="password"
-          placeholder="Пароль"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-2 rounded bg-gray-700 text-white"
-        />
-        <button
-          type="submit"
-          className="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-2 rounded"
-        >
-          Войти
-        </button>
+    <div style={{display:'flex',height:'100vh',alignItems:'center',justifyContent:'center',background:'#0b1020'}}>
+      <form onSubmit={submit} style={{background:'#071022',padding:24,borderRadius:12,width:360}}>
+        <h2 style={{margin:0,marginBottom:12}}>Вход</h2>
+        {err && <div style={{color:'#ff7b7b',marginBottom:8}}>{err}</div>}
+        <input placeholder='Логин' value={login} onChange={e=>setLogin(e.target.value)} style={{width:'100%',padding:8,marginBottom:8,borderRadius:6,background:'#0f1724',border:'1px solid #0b1220',color:'#e6eef8'}} />
+        <input type='password' placeholder='Пароль' value={pass} onChange={e=>setPass(e.target.value)} style={{width:'100%',padding:8,marginBottom:8,borderRadius:6,background:'#0f1724',border:'1px solid #0b1220',color:'#e6eef8'}} />
+        <button style={{width:'100%',padding:10,background:'#4f46e5',color:'white',borderRadius:8,border:'none'}}>Войти</button>
       </form>
     </div>
-  );
+  )
 }
