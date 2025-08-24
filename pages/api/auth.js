@@ -1,17 +1,15 @@
-import { NextResponse } from 'next/server';
-
 export default function handler(req, res) {
   if (req.method === 'POST') {
     const { login, pass } = req.body;
 
     if (login === 'admin' && pass === 'admin') {
-      const response = NextResponse.json({ success: true });
-      response.cookies.set('auth', '1', { path: '/' });
-      return response;
+      // Это правильный способ установки куки для твоего проекта
+      res.setHeader('Set-Cookie', 'auth=1; Path=/');
+      res.status(200).json({ success: true });
     } else {
-      return NextResponse.json({ success: false, message: 'Неверный логин или пароль' }, { status: 401 });
+      res.status(401).json({ success: false, message: 'Неверный логин или пароль' });
     }
   } else {
-    return NextResponse.json({ message: 'Метод не разрешен' }, { status: 405 });
+    res.status(405).json({ message: 'Метод не разрешен' });
   }
 }

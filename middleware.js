@@ -1,15 +1,24 @@
 import { NextResponse } from 'next/server';
 
-export function middleware(req) {
-  const { pathname } = req.nextUrl;
+export default function middleware(request) {
+  // Получаем куки из запроса
+  const cookie = request.cookies.get('auth');
 
-  if (pathname.startsWith('/_next') || pathname.startsWith('/api') || pathname.startsWith('/static') || pathname === '/favicon.ico') {
-    return NextResponse.next();
+  // Если куки 'auth' нет
+  if (!cookie || cookie.value !== '1') {
+    // Если пользователь пытается зайти не на страницу входа
+    if (request.nextUrl.pathname !== '/login') {
+      // Перенаправляем его на страницу входа
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
   }
-  if (pathname === '/login') return NextResponse.next();
 
-  const auth = req.cookies.get('auth');
-  if (auth && auth === '1') return NextResponse.next();
+  // Если куки 'auth' есть и пользователь пытается зайти на страницу входа
+  if (cookie && cookie.value === '1' && request.nextUrl.pathname === '/login') {
+    // Перенаправляем его на главную страницу
+    return NextResponse.redirect(new URL('/', request.url));
+  }
 
-  return NextResponse.redirect(new URL('/login', req.url));
+  // Если все в порядке, продолжаем
+  return NextResponse.next();
 }
