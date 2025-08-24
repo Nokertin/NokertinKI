@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: ai-chat-app
+    env: docker
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+      - key: NEXTAUTH_SECRET
+        sync: false
+      - key: NEXTAUTH_URL
+        value: https://ai-chat-app.onrender.com
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemma-3-27b
